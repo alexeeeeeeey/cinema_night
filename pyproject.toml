@@ -1,0 +1,40 @@
+[project]
+name = "cinema-night"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.115.12",
+    "pydantic-settings>=2.9.1",
+    "sqlalchemy>=2.0.40",
+    "uvicorn>=0.34.2",
+]
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+
+lint.extend-select = [
+    "I",   # isort (сортировка импортов)
+    "F",   # pyflakes (ошибки типа "переменная не используется")
+    "E",   # pycodestyle (базовые ошибки стиля)
+    "W",   # ещё pycodestyle
+    "B",   # flake8-bugbear (полезные предупреждения)
+    "C90", # mccabe (сложность функций)
+    "UP",  # pyupgrade (замена старого синтаксиса)
+]
+
+exclude = [
+    ".venv",
+    "__pycache__",
+    "migrations",
+    "build",
+    "dist"
+]
+
+[tool.ruff.format]
+quote-style = "double"
+docstring-code-format = true
+skip-magic-trailing-comma = false
+line-ending = "lf"
