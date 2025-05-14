@@ -1,11 +1,13 @@
 from typing import TypeVar
+
 from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import delete, insert, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
 T = TypeVar("T", bound=BaseModel)
 
-class SQLAlchemyRepository():
+
+class SQLAlchemyRepository:
     model = None
 
     def __init__(self, session: AsyncSession):
@@ -28,9 +30,7 @@ class SQLAlchemyRepository():
         res = await self.session.execute(stmt)
         return res.scalar_one()
 
-    async def add_many(
-        self, data: list[dict]
-    ) -> list[int]:
+    async def add_many(self, data: list[dict]) -> list[int]:
         stmt = insert(self.model).values(data).returning(self.model.id)
         res = await self.session.execute(stmt)
         return res.scalars().all()

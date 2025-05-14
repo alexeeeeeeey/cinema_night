@@ -1,4 +1,5 @@
 from database.base import async_session_maker
+from database.users.repository import UserRepository
 
 
 class UnitOfWork:

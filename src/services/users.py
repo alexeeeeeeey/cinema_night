@@ -1,5 +1,4 @@
 from database.users.schemas import UserSchemaAdd
-from utils.repository import SQLAlchemyRepository
 from utils.unit_of_work import UnitOfWork
 
 
