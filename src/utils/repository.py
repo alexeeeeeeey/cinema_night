@@ -42,6 +42,6 @@ class SQLAlchemyRepository:
         res = await self.session.execute(stmt)
         return res.scalar_one()
 
-    async def delete_one(self, data: dict) -> None:
-        stmt = delete(self.model).filter_by(**data)
+    async def delete_one(self, **filter_by) -> None:
+        stmt = delete(self.model).filter_by(**filter_by)
         await self.session.execute(stmt)

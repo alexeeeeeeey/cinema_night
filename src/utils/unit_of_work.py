@@ -11,7 +11,7 @@ class UnitOfWork:
 
         self.users = UserRepository(self.session)
 
-    async def __aexit__(self, *args):
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.rollback()
         await self.session.close()
 

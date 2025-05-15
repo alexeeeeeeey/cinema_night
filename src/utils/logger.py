@@ -33,17 +33,15 @@ def init_logger():
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
 
-    # Основные логгеры FastAPI / Uvicorn
     log_names = [
         "uvicorn",
         "uvicorn.access",
         "uvicorn.error",
         "fastapi",
         "httpx",
-    ]  # можешь добавить свое
+    ]
 
     for name in log_names:
         logger = logging.getLogger(name)
         logger.setLevel(logging.INFO)
-        logger.addHandler(log_handler)
-        logger.propagate = False  # важно: иначе будут дубли в root
+        # logger.addHandler(log_handler)
