@@ -1,9 +1,9 @@
 from fastapi import Depends, HTTPException, status
 
 from database.users.schemas import UserSchema
+from dependencies.users import get_user
 from permissions.base import Permission
 from permissions.roles import get_role_permissions
-from dependencies.users import get_user
 
 
 class PermissionChecker:
