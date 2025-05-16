@@ -9,6 +9,7 @@ dependencies = [
     "asyncpg>=0.30.0",
     "fastapi>=0.115.12",
     "pydantic-settings>=2.9.1",
+    "pyjwt>=2.10.1",
     "ruff>=0.11.10",
     "sqlalchemy>=2.0.40",
     "uvicorn>=0.34.2",
@@ -16,8 +17,6 @@ dependencies = [
 
 [tool.ruff]
 lint.ignore = ["B008"]
-line-length = 88
-indent-width = 4
 
 lint.extend-select = [
     "I",   # isort (сортировка импортов)
@@ -28,6 +27,8 @@ lint.extend-select = [
     "C90", # mccabe (сложность функций)
     "UP",  # pyupgrade (замена старого синтаксиса)
 ]
+line-length = 88
+indent-width = 4
 
 exclude = [
     ".venv",

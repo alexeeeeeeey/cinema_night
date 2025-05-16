@@ -4,8 +4,11 @@ from fastapi import APIRouter, Depends, status
 
 from database.users.schemas import UserAddSchema, UserSchema
 from dependencies.unit_of_work import get_uow
+from dependencies.users import get_user
 from services.users import UsersService
 from utils.unit_of_work import UnitOfWork
+from dependencies.permissions import PermissionChecker
+from permissions.user import User
 
 router = APIRouter(prefix="/users")
 
@@ -13,6 +16,11 @@ router = APIRouter(prefix="/users")
 @router.get("/")
 async def get_all_users(uow: UnitOfWork = Depends(get_uow)) -> list[UserSchema]:
     return await UsersService().get_users(uow)
+
+
+@router.get("/me", dependencies=[Depends(PermissionChecker([User.READ]))])
+async def get_user(user: UserSchema = Depends(get_user)) -> UserSchema:
+    return user
 
 
 @router.get("/{user_id}")

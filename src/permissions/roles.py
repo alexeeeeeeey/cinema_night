@@ -1,15 +1,9 @@
-from enum import Enum
-
+from database.users.schemas import PermissionEnum
 from permissions.user import User
 
 
-class Role(str, Enum):
-    ADMINISTRATOR = "ADMINISTRATOR"
-    USER = "USER"
-
-
 ROLE_PERMISSIONS = {
-    Role.ADMINISTRATOR: [
+    PermissionEnum.USER: [
         User.CREATE,
         User.READ,
         User.UPDATE,
@@ -18,5 +12,5 @@ ROLE_PERMISSIONS = {
 }
 
 
-def get_role_permissions(role: Role):
+def get_role_permissions(role: PermissionEnum):
     return ROLE_PERMISSIONS[role]
