@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Cookie, Depends, Response, status
 from fastapi.exceptions import HTTPException
 

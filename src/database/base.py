@@ -11,10 +11,12 @@ from core.config import settings
 
 T = TypeVar("T", bound=BaseModel)
 
-engine = create_async_engine(settings.DATABASE_URL,
+engine = create_async_engine(
+    settings.DATABASE_URL,
     pool_size=20,
     max_overflow=30,
-    pool_timeout=30,)
+    pool_timeout=30,
+)
 async_session_maker = async_sessionmaker(engine, autoflush=False, expire_on_commit=True)
 
 
