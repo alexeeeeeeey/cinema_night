@@ -1,3 +1,4 @@
+import asyncio
 from collections.abc import Awaitable, Callable
 
 from fastapi import Depends, HTTPException, Request, status
@@ -28,17 +29,18 @@ class PermissionChecker:
         uow: UnitOfWork = Depends(get_uow),
     ):
         perms = get_role_permissions(user.permission)
-        for perm in self.permissions_required:
-            if perm not in perms:
-                if not self.ownership_required:
-                    raise HTTPException(
-                        status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-                    )
 
-                for ownership in self.ownership_required:
-                    if not await ownership(request, user, uow):
-                        raise HTTPException(
-                            status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden"
-                        )
-                return
-        return
+        if all(perm in perms for perm in self.permissions_required):
+            return
+
+        if self.ownership_required and all(
+            await asyncio.gather(
+                *(
+                    ownership(request, user, uow)
+                    for ownership in self.ownership_required
+                )
+            )
+        ):
+            return
+
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden")

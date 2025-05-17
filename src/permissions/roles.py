@@ -1,5 +1,5 @@
 from database.users.schemas import PermissionEnum
-from permissions.user import User
+from permissions.users import User
 
 ROLE_PERMISSIONS = {
     PermissionEnum.USER: [],

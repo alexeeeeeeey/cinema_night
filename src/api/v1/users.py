@@ -5,11 +5,11 @@ from fastapi import APIRouter, Depends, status
 from database.users.schemas import UserAddSchema, UserSchema
 from dependencies.permissions import PermissionChecker
 from dependencies.unit_of_work import get_uow
-from permissions.user import User
+from permissions.users import User
 from services.users import UsersService
 from utils.unit_of_work import UnitOfWork
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=["Users"])
 
 
 @router.get("/", dependencies=[Depends(PermissionChecker([User.READ]))])
