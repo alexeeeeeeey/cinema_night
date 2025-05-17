@@ -1,5 +1,5 @@
 import jwt
-from fastapi import HTTPException, Security
+from fastapi import HTTPException, Security, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 
@@ -18,8 +18,12 @@ async def decode_jwt(
         payload = JWTSchema(**data)
 
     except InvalidSignatureError as e:
-        raise HTTPException(status_code=401, detail="Invalid signature") from e
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid signature"
+        ) from e
     except ExpiredSignatureError as e:
-        raise HTTPException(status_code=401, detail="Signature has expired") from e
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Signature has expired"
+        ) from e
 
     return payload

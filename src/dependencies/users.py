@@ -12,4 +12,4 @@ async def get_user(
     jwt: JWTSchema = Depends(decode_jwt), uow: UnitOfWork = Depends(get_uow)
 ):
     async with uow:
-        return await UsersService().get_user_by_id(uow, jwt.user_id)
+        return await UsersService.get_user_by_id(uow, jwt.user_id)

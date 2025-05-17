@@ -2,12 +2,13 @@ from database.users.schemas import PermissionEnum
 from permissions.user import User
 
 ROLE_PERMISSIONS = {
-    PermissionEnum.USER: [
+    PermissionEnum.USER: [],
+    PermissionEnum.ADMIN: [
         User.CREATE,
         User.READ,
         User.UPDATE,
         User.DELETE,
-    ]
+    ],
 }
 
 
