@@ -2,7 +2,12 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, status
 
-from database.users.schemas import UserAddSchema, UserSchema
+from database.users.schemas import (
+    UserAddSchema,
+    UserGetSchema,
+    UserIDSchema,
+    UserSchema,
+)
 from dependencies.permissions import PermissionChecker
 from dependencies.unit_of_work import get_uow
 from permissions.users import User
@@ -20,8 +25,8 @@ async def get_all_users(uow: UnitOfWork = Depends(get_uow)) -> list[UserSchema]:
 @router.get(
     "/{user_id}", dependencies=[Depends(PermissionChecker([User.READ], [User.is_user]))]
 )
-async def get_user_by_id(user_id: UUID, uow=Depends(get_uow)) -> UserSchema:
-    return await UsersService.get_user_by_id(uow, user_id)
+async def get_user_by_id(user_id: UUID, uow=Depends(get_uow)) -> UserGetSchema:
+    return await UsersService.get_stricted_user_by_id(uow, user_id)
 
 
 @router.put(
@@ -38,8 +43,9 @@ async def update_user(user_id: UUID, user: UserAddSchema, uow=Depends(get_uow)) 
     dependencies=[Depends(PermissionChecker([User.CREATE]))],
     status_code=status.HTTP_201_CREATED,
 )
-async def add_user(user: UserAddSchema, uow=Depends(get_uow)) -> UUID:
-    return await UsersService.add_user(uow, user)
+async def add_user(user: UserAddSchema, uow=Depends(get_uow)) -> UserIDSchema:
+    user_id = await UsersService.add_user(uow, user)
+    return UserIDSchema(id=user_id)
 
 
 @router.delete(

@@ -22,3 +22,20 @@ class UserAddSchema(BaseModel):
 
 class UserSchema(UserAddSchema, UserIDSchema):
     pass
+
+
+class UserGetSchema(BaseModel):
+    id: UUID
+    username: str
+    fullname: str
+
+
+class UserRegisterSchema(BaseModel):
+    username: str
+    password: str
+    fullname: str
+
+
+class UserLoginSchema(BaseModel):
+    username: str
+    password: str

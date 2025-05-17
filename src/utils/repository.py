@@ -1,4 +1,5 @@
 from typing import TypeVar
+from uuid import UUID
 
 from pydantic import BaseModel
 from sqlalchemy import delete, insert, select, update
@@ -25,7 +26,7 @@ class SQLAlchemyRepository:
         res = [row[0].to_read_model(schema) for row in res.all()]
         return res
 
-    async def add_one(self, data: dict) -> int:
+    async def add_one(self, data: dict) -> int | UUID:
         stmt = insert(self.model).values(**data).returning(self.model.id)
         res = await self.session.execute(stmt)
         return res.scalar_one()

@@ -1,4 +1,6 @@
-from database.users.schemas import UserAddSchema, UserSchema
+from uuid import UUID
+
+from database.users.schemas import UserAddSchema, UserGetSchema, UserSchema
 from utils.unit_of_work import UnitOfWork
 
 
@@ -10,9 +12,15 @@ class UsersService:
             return users
 
     @staticmethod
-    async def get_user_by_id(uow: UnitOfWork, user_id: str):
+    async def get_user_by_id(uow: UnitOfWork, user_id: UUID):
         async with uow:
             users = await uow.users.find_one(UserSchema, id=user_id)
+            return users
+
+    @staticmethod
+    async def get_stricted_user_by_id(uow: UnitOfWork, user_id: UUID):
+        async with uow:
+            users = await uow.users.find_one(UserGetSchema, id=user_id)
             return users
 
     @staticmethod
@@ -24,7 +32,7 @@ class UsersService:
             return user_id
 
     @staticmethod
-    async def update_user(uow: UnitOfWork, user_id: str, user: UserAddSchema):
+    async def update_user(uow: UnitOfWork, user_id: UUID, user: UserAddSchema):
         user_dict = user.model_dump()
         async with uow:
             user_id = await uow.users.edit_one(user_id, user_dict)
@@ -32,7 +40,7 @@ class UsersService:
             return user_id
 
     @staticmethod
-    async def delete_user(uow: UnitOfWork, user_id: str):
+    async def delete_user(uow: UnitOfWork, user_id: UUID):
         async with uow:
             user_id = await uow.users.delete_one(id=user_id)
             await uow.commit()
