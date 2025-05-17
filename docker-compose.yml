@@ -1,0 +1,12 @@
+services:
+  bot:
+    build: .
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - .:/container
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    command: python3 src/main.py
+    network_mode: "host"
