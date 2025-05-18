@@ -1,4 +1,6 @@
 from database.base import async_session_maker
+from database.halls.repository import HallRepository, SeatRepository
+from database.movies.repository import MovieRepository, RateRepository
 from database.users.repository import UserRepository
 
 
@@ -10,6 +12,10 @@ class UnitOfWork:
         self.session = self.session_factory()
 
         self.users = UserRepository(self.session)
+        self.movies = MovieRepository(self.session)
+        self.halls = HallRepository(self.session)
+        self.seats = SeatRepository(self.session)
+        self.rates = RateRepository(self.session)
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.rollback()

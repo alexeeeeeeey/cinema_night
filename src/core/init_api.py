@@ -11,5 +11,10 @@ async def no_result_found_handler(request: Request, exc: NoResultFound):
 
 
 @app.exception_handler(IntegrityError)
-async def conflict_handler(request: Request, exc: IntegrityError):
+async def integrity_error_handler(request: Request, exc: IntegrityError):
+    if hasattr(exc.orig, "pgcode") and exc.orig.pgcode == "23503":
+        raise HTTPException(
+            status_code=400, detail="Invalid reference: related object does not exist"
+        )
+
     raise HTTPException(status_code=409, detail="Conflict")
