@@ -10,6 +10,7 @@ from database.users.schemas import (
 )
 from dependencies.permissions import PermissionChecker
 from dependencies.unit_of_work import get_uow
+from dependencies.users import get_user
 from permissions.users import User
 from services.users import UsersService
 from utils.unit_of_work import UnitOfWork
@@ -20,6 +21,11 @@ router = APIRouter(prefix="/users", tags=["Users"])
 @router.get("/", dependencies=[Depends(PermissionChecker([User.READ]))])
 async def get_all_users(uow: UnitOfWork = Depends(get_uow)) -> list[UserSchema]:
     return await UsersService.get_users(uow)
+
+
+@router.get("/me")
+async def get_me(user: UserGetSchema = Depends(get_user)) -> UserGetSchema:
+    return user
 
 
 @router.get(
